@@ -1,0 +1,272 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    font-family: 'Consolas', 'Courier New', monospace;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #0a0a0a;
+    overflow-x: hidden;
+}
+
+#matrix {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; opacity: 0.25;
+}
+
+body::before {
+    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px; pointer-events: none; z-index: 1;
+}
+
+body::after {
+    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
+    pointer-events: none; z-index: 2;
+}
+
+.card {
+    background: rgba(15, 15, 20, 0.95);
+    border-radius: 8px;
+    border: 2px solid rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 50px rgba(0, 255, 0, 0.2), 0 0 100px rgba(0, 255, 0, 0.1);
+    max-width: 450px;
+    width: 95%;
+    margin: 10px;
+    position: relative;
+    overflow: visible;
+    z-index: 10;
+}
+
+.terminal-header {
+    background: linear-gradient(180deg, rgba(40, 40, 50, 0.95), rgba(25, 25, 35, 0.95));
+    padding: 12px 15px;
+    border-bottom: 2px solid rgba(0, 255, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.terminal-btn {
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.3); cursor: pointer; transition: all 0.2s;
+}
+.terminal-btn:hover { transform: scale(1.2); box-shadow: 0 0 10px currentColor; }
+.btn-red { background: #ff5f56; color: #ff5f56; }
+.btn-yellow { background: #ffbd2e; color: #ffbd2e; }
+.btn-green { background: #27c93f; color: #27c93f; }
+
+.terminal-title {
+    margin-left: 15px; color: rgba(0, 255, 0, 0.7);
+    font-size: 12px; font-family: 'Consolas', monospace;
+    flex: 1;
+}
+
+.sound-toggle {
+    margin-left: auto; background: none; border: 1px solid rgba(0, 255, 0, 0.4);
+    color: rgba(0, 255, 0, 0.6); padding: 4px 8px; border-radius: 4px;
+    cursor: pointer; font-family: 'Consolas', monospace; font-size: 11px;
+    transition: all 0.2s;
+}
+.sound-toggle:hover {
+    background: rgba(0, 255, 0, 0.2); color: rgba(0, 255, 0, 1);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.status-bar {
+    background: rgba(0, 50, 0, 0.5); padding: 8px 15px;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+    display: flex; justify-content: space-between; font-size: 11px;
+    color: rgba(0, 255, 0, 0.6); flex-wrap: wrap; gap: 5px;
+}
+.status-item { display: flex; align-items: center; gap: 5px; }
+.status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(0, 255, 0, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+    animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.avatar-container { text-align: center; padding: 20px 15px 15px; position: relative; }
+.avatar {
+    width: 100px; height: 100px; border-radius: 8px; margin: 0 auto 15px;
+    background: linear-gradient(135deg, #1a1a2a 0%, #0a0a1a 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; color: rgba(0, 255, 0, 1); font-weight: bold;
+    border: 3px solid rgba(0, 255, 0, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.5);
+    font-family: 'Consolas', monospace; position: relative;
+}
+.avatar::after {
+    content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+    border: 1px dashed rgba(0, 255, 0, 0.3); border-radius: 12px;
+    animation: rotate 10s linear infinite;
+}
+@keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+h1 {
+    margin: 0 0 5px; font-size: 22px; color: rgba(0, 255, 0, 1);
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); font-weight: 700;
+    letter-spacing: 1px; font-family: 'Consolas', monospace;
+}
+.nickname {
+    color: rgba(0, 255, 100, 0.7); font-size: 14px; margin-bottom: 5px;
+    font-family: 'Consolas', monospace;
+}
+.role {
+    color: rgba(0, 200, 255, 0.8); font-size: 12px;
+    font-family: 'Consolas', monospace; background: rgba(0, 50, 50, 0.3);
+    padding: 4px 12px; border-radius: 4px; display: inline-block;
+    border: 1px solid rgba(0, 200, 255, 0.3);
+}
+
+.console-line {
+    padding: 15px 20px; color: rgba(0, 255, 0, 0.8); font-size: 13px;
+    font-family: 'Consolas', monospace;
+    border-top: 1px solid rgba(0, 255, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+    background: rgba(0, 30, 0, 0.3);
+    min-height: 80px;
+}
+.console-line .prompt { color: rgba(0, 255, 0, 1); margin-right: 8px; }
+.console-line .command { color: rgba(0, 255, 100, 0.9); }
+.console-line .output { 
+    color: rgba(255, 255, 255, 0.9); 
+    display: block; 
+    margin-top: 5px; 
+    white-space: pre-line; 
+    line-height: 1.5;
+}
+.cursor {
+    display: inline-block; width: 8px; height: 16px;
+    background: rgba(0, 255, 0, 0.8);
+    animation: cursorBlink 1s step-end infinite;
+    vertical-align: middle; margin-left: 5px;
+}
+@keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.info-buttons {
+    display: flex; gap: 8px; padding: 10px 20px;
+    border-top: 1px solid rgba(0, 255, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+    background: rgba(0, 20, 0, 0.3);
+    flex-wrap: wrap;
+}
+.info-btn {
+    flex: 1; min-width: 80px; padding: 10px; border: 1px solid rgba(0, 255, 0, 0.4);
+    background: rgba(0, 40, 0, 0.5); color: rgba(0, 255, 0, 0.9);
+    cursor: pointer; font-family: 'Consolas', monospace; font-size: 12px;
+    border-radius: 4px; transition: all 0.2s; text-transform: uppercase;
+}
+.info-btn:hover {
+    background: rgba(0, 255, 0, 0.2); color: rgba(0, 255, 0, 1);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+.info-btn.active {
+    background: rgba(0, 255, 0, 0.3); border-color: rgba(0, 255, 0, 0.8);
+    font-weight: bold;
+}
+.clear-btn {
+    background: rgba(100, 0, 0, 0.5); border-color: rgba(255, 0, 0, 0.4);
+    color: rgba(255, 100, 100, 0.9);
+}
+.clear-btn:hover {
+    background: rgba(255, 0, 0, 0.2); color: rgba(255, 100, 100, 1);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.links { padding: 15px 20px 20px; display: flex; flex-direction: column; gap: 10px; }
+.btn {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+    background: rgba(0, 30, 0, 0.5); color: rgba(0, 255, 0, 0.9);
+    padding: 12px 15px; border-radius: 4px;
+    border: 1px solid rgba(0, 255, 0, 0.3); transition: all 0.2s ease;
+    font-weight: 600; font-size: 14px; font-family: 'Consolas', monospace;
+    position: relative; overflow: hidden; cursor: pointer;
+}
+.btn::before {
+    content: '>'; position: absolute; left: 10px; opacity: 0;
+    transition: opacity 0.2s ease; color: rgba(0, 255, 0, 1);
+}
+.btn:hover::before { opacity: 1; }
+.btn:hover {
+    background: rgba(0, 50, 0, 0.7); border-color: rgba(0, 255, 0, 0.6);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); padding-left: 25px;
+}
+.btn i { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.btn-text { position: relative; overflow: hidden; }
+.btn-github i { color: rgba(200, 200, 200, 1); }
+.btn-telegram i { color: rgba(0, 255, 100, 1); }
+.btn-vk i { color: rgba(0, 200, 255, 1); }
+.btn-discord i { color: rgba(100, 150, 255, 1); }
+.btn-orcid i { color: rgba(255, 200, 0, 1); }
+
+.system-info {
+    padding: 15px 20px 20px; background: rgba(0, 20, 0, 0.4);
+    border-top: 1px solid rgba(0, 255, 0, 0.2); font-size: 11px;
+    font-family: 'Consolas', monospace; color: rgba(0, 255, 0, 0.5);
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+}
+.info-item { display: flex; justify-content: space-between; }
+.info-label { color: rgba(0, 255, 0, 0.4); }
+.info-value { color: rgba(0, 255, 0, 0.8); }
+.info-value.live { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.cable {
+    position: absolute; height: 3px;
+    background: linear-gradient(90deg, rgba(0, 255, 0, 0.3), rgba(0, 255, 0, 0.6), rgba(0, 255, 0, 0.3));
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+.cable-top { top: -2px; left: 0; width: 100%; }
+.cable-bottom { bottom: -2px; left: 0; width: 100%; }
+
+.activity-led {
+    position: absolute; top: 15px; right: 70px; width: 6px; height: 6px;
+    border-radius: 50%; background: rgba(0, 255, 0, 0.3);
+    animation: ledBlink 0.5s ease-in-out infinite;
+}
+@keyframes ledBlink {
+    0%, 100% { background: rgba(0, 255, 0, 0.3); box-shadow: none; }
+    50% { background: rgba(0, 255, 0, 1); box-shadow: 0 0 10px rgba(0, 255, 0, 1); }
+}
+
+/* 📱 МОБИЛЬНАЯ ВЕРСИЯ */
+@media (max-width: 480px) {
+    body { overflow: auto; }
+    .card { width: 98%; margin: 5px; max-height: none; overflow: visible; }
+    .terminal-header { padding: 10px 12px; }
+    .terminal-title { font-size: 11px; margin-left: 10px; }
+    .sound-toggle { font-size: 10px; padding: 3px 6px; }
+    .status-bar { padding: 6px 12px; font-size: 10px; }
+    .avatar-container { padding: 15px 10px 10px; }
+    .avatar { width: 80px; height: 80px; font-size: 32px; margin-bottom: 10px; }
+    h1 { font-size: 18px; }
+    .nickname { font-size: 13px; }
+    .role { font-size: 11px; padding: 3px 8px; }
+    .console-line { padding: 12px 15px; font-size: 12px; min-height: 70px; }
+    .info-buttons { padding: 8px 15px; gap: 6px; }
+    .info-btn { padding: 8px; font-size: 11px; min-width: 70px; }
+    .links { padding: 12px 15px 15px; gap: 8px; }
+    .btn { padding: 10px 12px; font-size: 13px; }
+    .system-info { padding: 12px 15px 15px; grid-template-columns: 1fr; gap: 6px; font-size: 10px; }
+    .activity-led { display: none; }
+    .cable { display: none; }
+    .avatar::after { display: none; }
+    .status-dot { animation: none; }
+    .info-value.live { animation: none; }
+}
+
+@media (max-width: 360px) {
+    .terminal-btn { width: 10px; height: 10px; }
+    h1 { font-size: 16px; }
+    .btn { font-size: 12px; padding: 9px 10px; }
+    .info-btn { font-size: 10px; padding: 7px; }
+}
