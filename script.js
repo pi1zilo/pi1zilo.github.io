@@ -42,6 +42,7 @@ if (!isMobile) {
     canvas.style.display = 'none';
 }
 
+
 // ==================== ЗВУКИ ====================
 let soundEnabled = true;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -131,7 +132,7 @@ function updateSystemStats() {
     const cpu = Math.floor(Math.random() * 30) + 5;
     const ram = (Math.random() * 2 + 3).toFixed(1);
     document.getElementById('cpu-value').textContent = `${cpu}%`;
-    document.getElementById('ram-value').textContent = `${ram}GB / 16GB`;
+    document.getElementById('ram-value').textContent = `${ram}GB / 404GB`;
 }
 setInterval(updateSystemStats, 2000);
 
@@ -147,11 +148,47 @@ if (!isMobile) {
 
 // ==================== ДАННЫЕ (заполни сам) ====================
 const infoData = {
-    about: `> ERROR`,
+about: `> <b style="color:#4CAF50;"> Имя:</b> Тимур Левандовский
+> <b style="color:#4CAF50;">Ник:</b> BilioniD, P1zilo
+> <b style="color:#4CAF50;">Возраст:</b> 19 лет
+> <b style="color:#4CAF50;">Локация:</b> Москва, Россия<br>
 
-    skills: `> ERROR`,
+> <b style="color:#2196F3;">Обо мне:</b>
+Занимаюсь системным администрированием и немного разработкой.
 
-    projects: `> ERROR`
+Работаю с <b>Windows</b> и <b>Linux</b>: настраиваю серверы и сервисы,
+автоматизирую задачи с помощью <b>Python</b> и <b>Bash</b>.
+
+Учусь в <b>Московском городском открытом колледже</b>.
+Работаю в <b>Московском институте психоанализа</b> (техподдержка).
+
+Интересуюсь мониторингом и автоматизацией.`,
+  
+skills: `> <b style="color:#2196F3;">Языки программирования:</b>
+• Python
+• Bash / Shell
+
+> <b style="color:#2196F3;">Технологии и стек:</b>
+• Linux (Kali, Ubuntu, Arch)
+• Windows Server
+• Docker / Docker Compose
+• Git / GitHub
+• Nginx / Apache
+
+> <b style="color:#2196F3;">Мониторинг:</b>
+• Prometheus
+• Grafana
+• Node Exporter
+• Zabbix
+
+> <b style="color:#2196F3;">Инструменты:</b>
+• VS Code
+• Vim`,
+  
+projects: `> <b style="color:#2196F3;">Проекты:</b><br>
+• Персональный сайт-портфолио<br>
+• Telegram-бот на Python (автоматизация и уведомления)<br>
+• Стек мониторинга через Docker (Prometheus + Grafana + Node Exporter)`
 };
 
 // ==================== ФУНКЦИИ КОНСОЛИ ====================
@@ -160,7 +197,7 @@ function showInfo(section, btn) {
     if (btn) btn.classList.add('active');
     
     const output = document.getElementById('console-output');
-    output.textContent = infoData[section];
+    output.innerHTML = infoData[section];
     output.style.color = 'rgba(255, 255, 255, 0.9)';
     output.style.textShadow = '';
     output.style.fontSize = '';
