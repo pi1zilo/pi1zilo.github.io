@@ -2,15 +2,85 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>BilioniD - Тест</title>
-    <style>
-        body { font-family: sans-serif; max-width: 700px; margin: 50px auto; padding: 20px; }
-        h1 { color: #2c3e50; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Тимур Левандовский | SysAdmin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>👋 Привет, это тестовый сайт BilioniD!</h1>
-    <p>Если вы это видите — всё работает 🎉</p>
-    <p><i>Скоро здесь будет больше информации...</i></p>
+
+    <canvas id="matrix"></canvas>
+
+    <div class="card">
+        <div class="cable cable-top"></div>
+        <div class="cable cable-bottom"></div>
+
+        <div class="terminal-header">
+            <div class="terminal-btn btn-red" onclick="playClick()" title="Close"></div>
+            <div class="terminal-btn btn-yellow" onclick="playClick()" title="Minimize"></div>
+            <div class="terminal-btn btn-green" onclick="playClick()" title="Maximize"></div>
+            <span class="terminal-title">root@bilionid:~</span>
+            <div class="activity-led"></div>
+            <button class="sound-toggle" onclick="toggleSound()" id="soundBtn">
+                <i class="fas fa-volume-up"></i> ON
+            </button>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item"><div class="status-dot"></div><span>ONLINE</span></div>
+            <div class="status-item"><i class="fas fa-wifi"></i><span>PING: <span id="ping-value" class="live">--</span>ms</span></div>
+            <div class="status-item"><i class="fas fa-server"></i><span>UPTIME: <span id="uptime-value">00:00:00</span></span></div>
+        </div>
+
+        <div class="avatar-container">
+            <div class="avatar">TL</div>
+            <h1>Тимур Левандовский</h1>
+            <p class="nickname">@BilioniD</p>
+            <span class="role">SYSTEM ADMINISTRATOR</span>
+        </div>
+
+        <div class="console-line">
+            <span class="prompt">root@server:~$</span>
+            <span class="command">show info</span>
+            <span class="cursor"></span>
+            <span class="output" id="console-output"></span>
+        </div>
+
+        <div class="info-buttons">
+            <button class="info-btn" onclick="showInfo('about', this)">about</button>
+            <button class="info-btn" onclick="showInfo('skills', this)">skills</button>
+            <button class="info-btn" onclick="showInfo('projects', this)">projects</button>
+            <button class="info-btn clear-btn" onclick="clearConsole()">clear</button>
+        </div>
+
+        <div class="links">
+            <a href="https://github.com/pi1zilo" target="_blank" class="btn btn-github" onmouseenter="playClick()">
+                <i class="fab fa-github"></i><span class="btn-text">./github.com/pi1zilo</span>
+            </a>
+            <a href="https://t.me/pi1zilo" target="_blank" class="btn btn-telegram" onmouseenter="playClick()">
+                <i class="fab fa-telegram"></i><span class="btn-text">@pi1zilo</span>
+            </a>
+            <a href="https://vk.com/bilionid" target="_blank" class="btn btn-vk" onmouseenter="playClick()">
+                <i class="fab fa-vk"></i><span class="btn-text">vk.com/bilionid</span>
+            </a>
+            <a href="https://discord.com/channels/pi1zilo" target="_blank" class="btn btn-discord" onmouseenter="playClick()">
+                <i class="fab fa-discord"></i><span class="btn-text">discord:pi1zilo</span>
+            </a>
+            <a href="https://orcid.org/0009-0007-2396-7264" target="_blank" class="btn btn-orcid" onmouseenter="playClick()">
+                <i class="fas fa-id-card"></i><span class="btn-text">ORCID:0009-0007-2396-7264</span>
+            </a>
+        </div>
+
+        <div class="system-info">
+            <div class="info-item"><span class="info-label">OS:</span><span class="info-value">Linux 6.5.0</span></div>
+            <div class="info-item"><span class="info-label">SHELL:</span><span class="info-value">/bin/bash</span></div>
+            <div class="info-item"><span class="info-label">CPU:</span><span class="info-value live" id="cpu-value">12%</span></div>
+            <div class="info-item"><span class="info-label">RAM:</span><span class="info-value live" id="ram-value">4.2GB / 16GB</span></div>
+            <div class="info-item"><span class="info-label">IP:</span><span class="info-value" id="ip-value">--.--.--.--</span></div>
+            <div class="info-item"><span class="info-label">PORT:</span><span class="info-value">22 (SSH)</span></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
