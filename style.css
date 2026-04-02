@@ -207,6 +207,7 @@ h1 {
 .btn-vk i { color: rgba(0, 200, 255, 1); }
 .btn-discord i { color: rgba(100, 150, 255, 1); }
 .btn-orcid i { color: rgba(255, 200, 0, 1); }
+.btn-email i { color: rgba(255, 100, 100, 1); }
 
 .system-info {
     padding: 15px 20px 20px; background: rgba(0, 20, 0, 0.4);
