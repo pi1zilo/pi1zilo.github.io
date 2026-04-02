@@ -192,17 +192,34 @@ projects: `> <b style="color:#2196F3;">Проекты:</b><br>
 };
 
 // ==================== ФУНКЦИИ КОНСОЛИ ====================
+function typeText(element, text, speed = 10) {
+    // отключаем эффект на телефонах
+    if (isMobile) {
+        element.innerHTML = text;
+        return;
+    }
+
+    element.innerHTML = '';
+    let i = 0;
+
+    function typing() {
+        if (i < text.length) {
+            element.innerHTML = text.slice(0, i + 1);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
+}
+
 function showInfo(section, btn) {
     document.querySelectorAll('.info-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
-    
+
     const output = document.getElementById('console-output');
-    output.innerHTML = infoData[section];
-    output.style.color = 'rgba(255, 255, 255, 0.9)';
-    output.style.textShadow = '';
-    output.style.fontSize = '';
-    output.style.fontWeight = '';
-    
+    output.innerHTML = '';
+
+    typeText(output, infoData[section], 5);
     playClick();
 }
 
@@ -221,5 +238,69 @@ document.body.addEventListener('click', () => {
 if (!isMobile) {
     startServerHum();
 }
+
+function createLeshyBackground() {
+    const container = document.getElementById('leshyBg');
+    if (!container) return;
+
+    const word = 'Леший ';
+    const lineText = word.repeat(50);
+
+    for (let i = 0; i < 8; i++) {
+        const line = document.createElement('div');
+        line.className = 'leshy-line' + (i % 2 ? ' reverse' : '');
+        line.style.top = (i * 12) + '%';
+        line.textContent = lineText;
+        container.appendChild(line);
+    }
+}
+
+let secretSequence = [];
+const correctSequence = ['green','red','yellow','yellow','red'];
+let secretActive = false;
+
+function triggerSecret() {
+    if (secretActive) return;
+    secretActive = true;
+
+    const avatar = document.querySelector('.avatar-container');
+    const original = avatar.innerHTML;
+
+    avatar.innerHTML = `
+        <div style="
+            color:rgb(255, 251, 0);;
+            font-size:18px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            height:100%;
+            text-align:center;
+        ">
+            🍺🍻🍺Красава возми с полки ПИВО🍺🍻🍺
+        </div>
+    `;
+
+    setTimeout(() => {
+        avatar.innerHTML = original;
+        createLeshyBackground();
+        secretActive = false;
+    }, 10000);
+}
+
+function handleSecret(color) {
+    secretSequence.push(color);
+    if (secretSequence.length > 5) secretSequence.shift();
+
+    if (JSON.stringify(secretSequence) === JSON.stringify(correctSequence)) {
+        triggerSecret();
+        secretSequence = [];
+    }
+}
+
+document.querySelector('.btn-red').onclick = () => { playClick(); handleSecret('red'); };
+document.querySelector('.btn-yellow').onclick = () => { playClick(); handleSecret('yellow'); };
+document.querySelector('.btn-green').onclick = () => { playClick(); handleSecret('green'); };
+
+createLeshyBackground();
 
 // Консоль пустая при загрузке - пользователь сам нажимает кнопки
